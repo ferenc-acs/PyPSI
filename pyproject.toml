@@ -1,7 +1,14 @@
 [project]
 name = "pypsi"
 version = "0.1.0"
-description = "Add your description here"
+description = "Python implementation of PSI Theory cognitive architecture"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
