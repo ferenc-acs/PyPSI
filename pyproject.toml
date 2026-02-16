@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Python implementation of PSI Theory cognitive architecture"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pygame>=2.6.1",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0"]
