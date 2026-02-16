@@ -73,6 +73,12 @@ class PSIBot:
         self.action_cooldown: float = 0.0
         self.last_action_result: str = ""
         
+    def get_most_urgent_need(self) -> tuple[NeedType, float]:
+        """Get the most urgent need and its deficit value."""
+        bedarfe = self.need_system.get_all_bedarfe()
+        most_urgent = max(bedarfe.keys(), key=lambda nt: bedarfe[nt])
+        return most_urgent, bedarfe[most_urgent]
+        
     def update(self, island, dt: float, elapsed: float) -> None:
         self.need_system.update_all(dt)
         
