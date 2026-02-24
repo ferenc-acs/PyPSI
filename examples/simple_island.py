@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Simple Island Demo - Pygame visualization of PyPSI agent."""
+"""Simple Island Demo - Pygame visualization of a PyPSI agent.
+
+Demonstrates:
+- Need tank depletion and satisfaction dynamics
+- Motivator accumulation and Expectation × Value motive selection
+- Perception/action loop in a grid-based island environment
+"""
 
 from __future__ import annotations
 

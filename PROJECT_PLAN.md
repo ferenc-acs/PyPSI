@@ -1,9 +1,9 @@
 # PyPsiCode: Project Plan
 
 **Mission:** Port PSI Theory (Dörner et al.) from Delphi to Modern Python
-**Target:** Python 3.12+ with `uv` package manager, Kivy GUI
+**Target:** Python 3.12+ with `uv` package manager, Pygame visualization
 **Collaboration:** Clawd + Claude Code
-**Status:** Phase 1 - Research & Discovery
+**Status:** Phase 2 in progress (Phase 1 complete)
 
 ---
 
@@ -38,15 +38,90 @@ Modern LLMs lack intrinsic motivation. PSI provides a complete framework for goa
 ### Key Delphi Files to Port
 
 | File | Purpose | Lines |
-|------|---------|-------|
-| `UPSIMain.Pas` | Core PSI engine (motivation, planning, action) | ~2500 |
-| `UAction.pas` | Action execution |
-| `UPercept.Pas` | Perception system |
-| `UFValChange.pas` | Value/motivator changes |
-| `UStrukturen.pas` | Data structures |
-| `UFEmotionen.dfm` | Emotion display GUI |
-| `UFFace.Pas` | Facial expression system |
-| `UFNetMon.pas` | Network/monitoring GUI |
+|------|---------|------:|
+| `UPSIMain.Pas` | Core PSI engine (motivation, planning, action) | 2556 |
+| `UAction.pas` | Action execution | 431 |
+| `UPercept.Pas` | Perception system | 1074 |
+| `UFValChange.pas` | Value/motivator changes | 614 |
+| `UStrukturen.Pas` | Data structures | 2848 |
+| `UFEmotionen.dfm` | Emotion display GUI | 4 |
+| `UFFace.Pas` | Facial expression system | 199 |
+| `UFNetMon.pas` | Network/monitoring GUI | 843 |
+
+### Delphi Source Line Counts (PsiCode/)
+
+| File | Lines |
+|------|------:|
+| `Execute.dpr` | 14 |
+| `Menue.Pas` | 716 |
+| `motivation.dfm` | 16 |
+| `motivation.pas` | 50 |
+| `PMot.dpr` | 13 |
+| `Psi.dpr` | 76 |
+| `UAction.pas` | 431 |
+| `UBag.pas` | 248 |
+| `UBar.pas` | 140 |
+| `UBitmaps.pas` | 310 |
+| `Ucsv.pas` | 166 |
+| `UDefine.pas` | 86 |
+| `UFace.Pas` | 1467 |
+| `UFAction.dfm` | 25 |
+| `UFAction.pas` | 100 |
+| `UFDlgInput.dfm` | 48 |
+| `UFDlgInput.pas` | 136 |
+| `UFEEG.dfm` | 42 |
+| `UFEEG.pas` | 257 |
+| `UFEmotionen.dfm` | 4 |
+| `UFEmotionen.pas` | 110 |
+| `UFExecute.dfm` | 17 |
+| `UFExecute.pas` | 317 |
+| `UFFace.dfm` | 10 |
+| `UFFace.Pas` | 199 |
+| `UFFaceDlg.dfm` | 5 |
+| `UFFaceDlg.Pas` | 29 |
+| `UFListe.dfm` | 11 |
+| `UFListe.pas` | 112 |
+| `UFMemo.dfm` | 26 |
+| `UFMemo.pas` | 40 |
+| `UFModulationen.dfm` | 5 |
+| `UFModulationen.pas` | 121 |
+| `UFMotive.dfm` | 3 |
+| `UFMotive.pas` | 114 |
+| `UFNet.dfm` | 18 |
+| `UFNet.pas` | 525 |
+| `UFNetMon.dfm` | 142 |
+| `UFNetMon.pas` | 843 |
+| `UFPercept.dfm` | 25 |
+| `UFPercept.pas` | 76 |
+| `UFPsi.dfm` | 16 |
+| `UFPsi.pas` | 1106 |
+| `UFSchema.dfm` | 58 |
+| `UFSchema.pas` | 408 |
+| `UFShowBitmap.dfm` | 8 |
+| `UFShowBitmap.pas` | 160 |
+| `UFSituation.dfm` | 26 |
+| `UFSituation.pas` | 261 |
+| `UFUmgebung.dfm` | 33 |
+| `UFUmgebung.pas` | 86 |
+| `UFValChange.dfm` | 49 |
+| `UFValChange.pas` | 614 |
+| `UFValues.dfm` | 10 |
+| `UFValues.pas` | 732 |
+| `UGeneral.pas` | 663 |
+| `UHtml.pas` | 415 |
+| `UInfo.pas` | 151 |
+| `UParam.pas` | 174 |
+| `Upb.pas` | 193 |
+| `UpbPsi.pas` | 152 |
+| `UPercept.Pas` | 1074 |
+| `UPsiClient.pas` | 1766 |
+| `UPSIMain.Pas` | 2556 |
+| `UPsiMainxy.Pas` | 2422 |
+| `UPsiServer.pas` | 1250 |
+| `USmallProtokoll.pas` | 208 |
+| `USound.Pas` | 139 |
+| `UStrList.Pas` | 425 |
+| `UStrukturen.Pas` | 2848 |
 
 ---
 
@@ -104,26 +179,26 @@ Modern LLMs lack intrinsic motivation. PSI provides a complete framework for goa
 
 ## 🗓️ Implementation Phases
 
-### Phase 1: Foundation (Week 1-2)
+### Phase 1: Foundation (Week 1-2) ✓
 **Goal:** Core data structures and need system
 
-- [ ] Set up Python project with `uv`
-- [ ] Port core data structures (neurons, schemata, synapses)
-- [ ] Implement need tanks (Hunger, Thirst, Energy, Certainty, Competence, Affiliation)
-- [ ] Basic motivator accumulation (logarithmic)
-- [ ] Motive selection (Expectation × Value)
-- [ ] Unit tests for core mechanics
+- [x] Set up Python project with `uv`
+- [x] Port core data structures (neurons, schemata, synapses)
+- [x] Implement need tanks (Hunger, Thirst, Energy, Certainty, Competence, Affiliation)
+- [x] Basic motivator accumulation (logarithmic)
+- [x] Motive selection (Expectation × Value)
+- [x] Unit tests for core mechanics
 
 **Deliverable:** `pytest` passing, basic need dynamics working
 
 ### Phase 2: Action & Perception (Week 3-4)
 **Goal:** Agent can act and perceive
 
-- [ ] Port action schema system
-- [ ] Port perception system (hypothesis-driven)
+- [x] Port action schema system
+- [x] Port perception system (hypothesis-driven)
 - [ ] Protocol (unified memory) with decay
 - [ ] Conditional association search
-- [ ] Simple environment interaction
+- [x] Simple environment interaction
 
 **Deliverable:** Agent can navigate simple grid world, satisfy basic needs
 
@@ -151,7 +226,7 @@ Modern LLMs lack intrinsic motivation. PSI provides a complete framework for goa
 **Deliverable:** Observable emotional states, adaptive behavior under pressure
 
 ### Phase 5: GUI & Visualization (Week 9-10)
-**Goal:** Kivy-based interactive GUI
+**Goal:** Pygame-based interactive visualization
 
 - [ ] Need tank visualizations
 - [ ] Motivator activity displays
@@ -181,7 +256,7 @@ Modern LLMs lack intrinsic motivation. PSI provides a complete framework for goa
 |-----------|------------|
 | Language | Python 3.12+ |
 | Package Manager | `uv` |
-| GUI Framework | Kivy 2.3+ |
+| GUI Framework | Pygame 2.6+ |
 | Testing | pytest |
 | Type Hints | Full typing with mypy |
 | Documentation | Markdown + docstrings |
@@ -198,19 +273,19 @@ PyPsiCode/
 │       ├── __init__.py
 │       ├── core/           # neurons, schemata, synapses
 │       ├── needs/          # tank system, motivators
-│       ├── memory/         # protocol, decay, reinforcement
-│       ├── action/         # action schemas, planning
+│       ├── memory/         # protocol, decay, reinforcement (planned)
+│       ├── action/         # action schemas
 │       ├── perception/     # hypothesis-driven perception
-│       ├── emotion/        # signal systems, modulation
-│       └── gui/            # Kivy components
+│       ├── emotion/        # modulation (signals planned)
+│       ├── environment/    # island world + percepts
+│       └── gui/            # pygame UI (planned)
 ├── tests/
 │   └── test_*.py
 ├── docs/
-│   ├── architecture.md
-│   └── api/
+│   └── archive/
+│       └── PHASE2_SUMMARY.md
 └── examples/
-    ├── simple_world.py
-    └── social_world.py
+    └── simple_island.py
 ```
 
 ---

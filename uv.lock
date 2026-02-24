@@ -75,6 +75,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pygame" },
+    { name = "pytest" },
 ]
 
 [package.optional-dependencies]
@@ -85,6 +86,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pygame", specifier = ">=2.6.1" },
+    { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
 ]
 provides-extras = ["dev"]

@@ -1,5 +1,7 @@
 # Phase 2 Implementation Summary
 
+> Archived snapshot. Environment, perception, and action systems are implemented, but protocol/memory and conditional association search are not yet implemented, so Phase 2 is partial.
+
 ## Overview
 Successfully implemented Phase 2 of the PyPSI project, adding the environment, perception, and action systems along with a pygame-based visualization demo.
 
@@ -81,23 +83,31 @@ Successfully implemented Phase 2 of the PyPSI project, adding the environment, p
     - +/-: Adjust simulation speed
     - ESC/Q: Quit
 
-### New Tests
+### Tests
 
-#### 1. `tests/test_environment.py` (14 tests)
+#### 1. `tests/test_environment.py` (19 tests)
 - GridPos coordinate operations
 - Direction conversions
 - Tile properties and resources
 - Island generation and navigation
 - Percept creation
 
-#### 2. `tests/test_action.py` (12 tests)
+#### 2. `tests/test_action.py` (17 tests)
 - Action library management
 - MoveAction creation and execution
 - EatAction preconditions and effects
 - DrinkAction preconditions and effects
 - RestAction behavior
 
-#### 3. `tests/test_perception.py` (12 tests)
+#### 3. `tests/test_perception.py` (13 tests)
+
+#### 4. `tests/test_structures.py` (22 tests)
+- Core PSI structures (neurons, synapses, schemata)
+
+#### 5. `tests/test_needs.py` (3 tests)
+- Need tank spike mechanism
+- Emotional modulation mapping
+- Logarithmic motivator pressure accumulation
 - PerceptionConfig settings
 - PerceptionSystem basic operation
 - Resource detection
@@ -112,13 +122,8 @@ Successfully implemented Phase 2 of the PyPSI project, adding the environment, p
 #### `src/pypsi/__init__.py`
 - Added exports for environment and needs modules
 
-## Test Results
-All 71 tests passing:
-- 22 original tests (test_structures.py)
-- 14 new environment tests
-- 12 new action tests
-- 12 new perception tests
-- 11 needs/motivator tests (from Phase 1)
+## Test Inventory
+Total test functions: 74 across `tests/test_*.py` (counts above).
 
 ## Architecture Overview
 The PSI agent now operates in a complete loop:
