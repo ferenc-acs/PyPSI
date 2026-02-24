@@ -125,6 +125,19 @@ class NeedTank:
         fill_amount = amount if amount is not None else self.fill_rate
         self.current_level = min(self.target_level, self.current_level + fill_amount)
         return self
+
+    def spike(self) -> Self:
+        """Trigger a U-signal spike that forces the need to critical.
+
+        U-signals (ZACKE) represent sudden urgent need spikes (e.g., pain or
+        immediate danger). A spike causes a 100% overshoot, emptying the tank
+        so the need becomes immediately critical.
+
+        Returns:
+            Self for method chaining
+        """
+        self.current_level = 0.0
+        return self
     
     def bedarf(self) -> float:
         """Calculate the deficit (Bedarf) that drives behavior.

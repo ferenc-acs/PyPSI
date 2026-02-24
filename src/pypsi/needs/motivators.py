@@ -65,7 +65,7 @@ class Motivator:
     
     A Motivator tracks the accumulated deficit for a specific need type,
     transforming raw Bedarf into an activity signal that drives behavior.
-    The activity grows logarithmically with accumulated deficit, providing
+    The activity grows via logarithmic pressure accumulation, providing
     bounded growth that prevents any single need from completely dominating.
     
     In PSI Theory, motivators serve as the bridge between physiological/cognitive
@@ -73,39 +73,50 @@ class Motivator:
     
     Key concepts:
     - **Accumulated Bedarf**: Running sum of deficit signals over time
-    - **Activity**: log(1 + accumulated_bedarf), bounded motivational signal
+    - **Accumulated Pressure**: Running sum of log(1 + bedarf) over time
+    - **Activity**: current accumulated pressure (bounded)
     - **Decay**: Gradual reduction of accumulated signal when need is satisfied
     
     Attributes:
         need_type: Which need this motivator tracks
         accumulated_bedarf: Running sum of deficit signals
-        decay_rate: Rate at which accumulated bedarf decays
+        decay_rate: Rate at which accumulated signals decay
         max_accumulation: Upper bound for accumulated bedarf
+        max_pressure: Upper bound for accumulated pressure
     """
     
     need_type: NeedType
     accumulated_bedarf: float = 0.0
+    accumulated_pressure: float = 0.0
     decay_rate: float = 0.1
     max_accumulation: float = 10.0
+    max_pressure: float = 5.0
     
-    def accumulate(self, bedarf: float) -> float:
+    def accumulate(self, bedarf: float, dt: float = 1.0) -> float:
         """Add a Bedarf signal to the accumulated total.
         
         When a need tank reports a deficit, that signal is accumulated by
         the corresponding motivator. This allows temporary deficits to build
-        up motivational pressure over time.
+        up motivational pressure over time. Pressure accumulation is
+        logarithmic, so each additional deficit has diminishing impact.
         
         The accumulation is bounded to prevent runaway growth.
         
         Args:
             bedarf: The deficit value to accumulate (typically from NeedTank.bedarf())
+            dt: Time delta (default 1.0 = one time unit)
             
         Returns:
             The new accumulated bedarf value
         """
+        bedarf = max(0.0, bedarf)
         self.accumulated_bedarf = min(
             self.max_accumulation,
-            self.accumulated_bedarf + max(0.0, bedarf)
+            self.accumulated_bedarf + bedarf * dt
+        )
+        self.accumulated_pressure = min(
+            self.max_pressure,
+            self.accumulated_pressure + math.log1p(bedarf) * dt
         )
         return self.accumulated_bedarf
     
@@ -124,24 +135,26 @@ class Motivator:
         """
         decay_amount = self.decay_rate * dt
         self.accumulated_bedarf = max(0.0, self.accumulated_bedarf - decay_amount)
+        self.accumulated_pressure = max(0.0, self.accumulated_pressure - decay_amount)
         return self.accumulated_bedarf
     
     def get_activity(self) -> float:
         """Calculate the motivational activity signal.
         
-        Activity is computed as log(1 + accumulated_bedarf), which provides:
-        - Bounded growth (logarithmic)
+        Activity is computed as accumulated pressure, where pressure is
+        the running sum of log(1 + bedarf). This provides:
+        - Logarithmic accumulation (diminishing returns over time)
         - Sensitivity to small deficits (steep near zero)
-        - Diminishing returns for large deficits
+        - Bounded growth via max_pressure
         
         This transformation prevents any single need from completely
         dominating the motivational landscape while still allowing
         urgent needs to have strong influence.
         
         Returns:
-            Activity value (0.0 to ~2.4 for default max_accumulation=10)
+            Activity value (0.0 to max_pressure)
         """
-        return math.log1p(self.accumulated_bedarf)
+        return self.accumulated_pressure
     
     def reset(self) -> None:
         """Reset accumulated bedarf to zero.
@@ -150,12 +163,14 @@ class Motivator:
         the motivational state.
         """
         self.accumulated_bedarf = 0.0
+        self.accumulated_pressure = 0.0
     
     def __repr__(self) -> str:
         """String representation showing motivator state."""
         return (
             f"Motivator({self.need_type.name}, "
             f"acc={self.accumulated_bedarf:.3f}, "
+            f"pressure={self.accumulated_pressure:.3f}, "
             f"activity={self.get_activity():.3f})"
         )
 
@@ -397,5 +412,5 @@ def update_motivators_from_bedarfe(
     """
     for need_type, motivator in motivators.items():
         if need_type in bedarfe:
-            motivator.accumulate(bedarfe[need_type])
+            motivator.accumulate(bedarfe[need_type], dt)
         motivator.decay(dt)

@@ -10,6 +10,7 @@ from .environment import (
     TerrainType,
     create_simple_island,
 )
+from .emotion import EmotionalState
 from .needs import (
     Motivator,
     Motivselektor,
@@ -35,6 +36,8 @@ __all__ = [
     "ResourceType",
     "TerrainType",
     "create_simple_island",
+    # Emotion
+    "EmotionalState",
     # Needs
     "NeedType",
     "NeedTank",
